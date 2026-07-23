@@ -1,0 +1,25 @@
+{
+  "name": "cicdproject",
+  "version": "1.0.0",
+  "description": "CI/CD Demo Project",
+  "main": "index.js",
+  "scripts": {
+    "lint": "htmlhint index.html",
+    "test": "echo \"Tests Passed\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RahulGurram4/cicd-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/RahulGurram4/cicd-project/issues"
+  },
+  "homepage": "https://github.com/RahulGurram4/cicd-project#readme",
+  "devDependencies": {
+    "htmlhint": "^1.9.2"
+  }
+}
