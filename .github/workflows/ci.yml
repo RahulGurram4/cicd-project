@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
       - develop
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,3 +32,44 @@ jobs:
 
       - name: Run Automated Tests
         run: npm test
+
+      - name: Build Docker Image
+        run: docker build -t cicdproject:v1 .
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Tag Docker Image
+        run: |
+          docker tag cicdproject:v1 gurramrahul/cicdproject:v1
+          docker tag cicdproject:v1 gurramrahul/cicdproject:latest
+
+      - name: Push Docker Images
+        run: |
+          docker push gurramrahul/cicdproject:v1
+          docker push gurramrahul/cicdproject:latest
+
+  deploy-development:
+    needs: build-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Development
+        run: |
+          echo "Deploying application to Development Environment"
+
+  deploy-production:
+    needs: deploy-development
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    steps:
+      - name: Deploy to Production
+        run: |
+          echo "Production Deployment Approved"
+          echo "Deploying application to Production Environment"
